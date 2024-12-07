@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de recensement</title>
+    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <style>
+        /* Bannière bleue */
+        .banner {
+            background-color: #007BFF;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Conteneur du formulaire */
+        .form-container {
+            margin: 20px;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #f4f4f4;
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Styles pour les champs de formulaire */
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            margin-top: 20px;
+            text-align: center;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Bannière bleue avec les titres et sous-titres -->
+    <div class="banner">
+        <h1>Formulaire de recensement</h1>
+        <h3>COMITÉ POUR L’ÉPANOUISSEMENT ACADÉMIQUE</h3>
+        <h4>BUREAU DES ETUDIANTS IITG</h4>
+        <h5>Bureau communication et événementielle</h5>
+        <h6>BEBONA Fanel & EDOU BIBANG Brunel</h6>
+    </div>
+
+    <div class="form-container">
+        <form id="surveyForm" onsubmit="return handleSubmit(event)">
+            <h3>INFORMATIONS DE L’ÉTUDIANT</h3>
+            <label for="nom">Nom:</label>
+            <input type="text" id="nom" name="nom" required>
+
+            <label for="prenom">Prénom:</label>
+            <input type="text" id="prenom" name="prenom" required oninput="showPrenomMessage()">
+            <div id="prenomMessage" style="display:none; color: green;">Joli prénom 🤭</div>
+
+            <label for="dob">Date et lieu de naissance:</label>
+            <input type="text" id="dob" name="dob" required>
+
+            <label for="nationalite">Nationalité:</label>
+            <input type="text" id="nationalite" name="nationalite" required>
+
+            <label for="boursier">Boursier:</label>
+            <select id="boursier" name="boursier" required>
+                <option value="oui">Oui</option>
+                <option value="non">Non</option>
+            </select>
+
+            <label for="classe">Classe:</label>
+            <select id="classe" name="classe" required onchange="showClasseMessage()">
+                <option value="Licence 1">Licence 1</option>
+                <option value="Licence 2">Licence 2</option>
+                <option value="Licence 3">Licence 3</option>
+                <option value="Master 1">Master 1</option>
+                <option value="Master 2">Master 2</option>
+            </select>
+            <div id="classeMessage" style="display:none; color: green;">Bravo !</div>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="telephone">Numéro de téléphone:</label>
+            <input type="text" id="telephone" name="telephone" required>
+
+            <label for="adresse">Adresse:</label>
+            <textarea id="adresse" name="adresse" required></textarea>
+
+            <h3>INFORMATIONS TUTEURS</h3>
+            <label for="nomTuteur">Nom:</label>
+            <input type="text" id="nomTuteur" name="nomTuteur" required>
+
+            <label for="prenomTuteur">Prénom:</label>
+            <input type="text" id="prenomTuteur" name="prenomTuteur" required>
+
+            <label for="metierTuteur">Métier:</label>
+            <input type="text" id="metierTuteur" name="metierTuteur" required>
+
+            <label for="emailTuteur">Email:</label>
+            <input type="email" id="emailTuteur" name="emailTuteur" required>
+
+            <label for="adresseTuteur">Adresse:</label>
+            <textarea id="adresseTuteur" name="adresseTuteur" required></textarea>
+
+            <label for="telephoneTuteur">Téléphone:</label>
+            <input type="text" id="telephoneTuteur" name="telephoneTuteur" required>
+
+            <h3>INFORMATIONS SUPPLÉMENTAIRES</h3>
+            <label for="antecedents">Avez-vous des antécédents médicaux importants que nous devrions connaître ?</label>
+            <select id="antecedents" name="antecedents" required onchange="showAntecedentsMessage()">
+                <option value="non">Non</option>
+                <option value="oui">Oui</option>
+            </select>
+            <div id="antecedentsMessage" style="display:none; color: green;">
+                T’inquiètes pas, on est là pour t’aider, tu fais partie de la famille maintenant.
+            </div>
+
+            <label for="handicap">Avez-vous un handicap ?</label>
+            <select id="handicap" name="handicap" required onchange="showHandicapMessage()">
+                <option value="non">Non</option>
+                <option value="oui">Oui</option>
+            </select>
+            <div id="handicapMessage" style="display:none; color: green;">
+                Nous sommes là pour t’aider, si tu y mets du tiens ton handicap deviendra une force.
+            </div>
+
+            <label for="activites">Quelles activités souhaiteriez-vous voir organiser par le Bureau des étudiants ?</label>
+            <textarea id="activites" name="activites" required oninput="showActivitesMessage()"></textarea>
+            <div id="activitesMessage" style="display:none; color: green;">
+                Ah ouais très intéressant ! Nous y réfléchirons, ton avis sera pris en compte 😉
+            </div>
+
+            <label for="activiteCommerciale">Avez-vous une activité commerciale à proposer à l’institut ?</label>
+            <select id="activiteCommerciale" name="activiteCommerciale" required onchange="showActiviteCommercialeMessage()">
+                <option value="non">Non</option>
+                <option value="oui">Oui</option>
+            </select>
+            <div id="activiteCommercialeMessage" style="display:none; color: green;">
+                Ah ! Voilà un jeune entrepreneur. Bonne idée ! Nous ferons de notre mieux pour t’accompagner.
+            </div>
+
+            <label for="activiteDetails">Si oui, parlez-nous en :</label>
+            <textarea id="activiteDetails" name="activiteDetails"></textarea>
+
+            <button type="submit">Soumettre</button>
+        </form>
+
+        <div id="confirmationMessage" class="message" style="display: none;">
+            Le BDE te remercie pour ta coopération. À plus tard chers étudiants.
+        </div>
+    </div>
+
+    <script>
+        emailjs.init("wuZVLZSPmA5k4DDE2"); // Initialisation de EmailJS avec votre user ID
+
+        // Affiche le message pour le prénom
+        function showPrenomMessage() {
+            document.getElementById("prenomMessage").style.display = "block";
+        }
+
+        // Affiche le message pour la classe
+        function showClasseMessage() {
+            document.getElementById("classeMessage").style.display = "block";
+        }
+
+        // Affiche le message pour les antécédents
+        function showAntecedentsMessage() {
+            if (document.getElementById("antecedents").value === "oui") {
+                document.getElementById("antecedentsMessage").style.display = "block";
+            } else {
+                document.getElementById("antecedentsMessage").style.display = "none";
+            }
+        }
+
+        // Affiche le message pour le handicap
+        function showHandicapMessage() {
+            if (document.getElementById("handicap").value === "oui") {
+                document.getElementById("handicapMessage").style.display = "block";
+            } else {
+                document.getElementById("handicapMessage").style.display = "none";
+            }
+        }
+
+        // Affiche le message pour les activités
+        function showActivitesMessage() {
+            document.getElementById("activitesMessage").style.display = "block";
+        }
+
+        // Affiche le message pour l'activité commerciale
+        function showActiviteCommercialeMessage() {
+            if (document.getElementById("activiteCommerciale").value === "oui") {
+                document.getElementById("activiteCommercialeMessage").style.display = "block";
+            } else {
+                document.getElementById("activiteCommercialeMessage").style.display = "none";
+            }
+        }
+
+        // Fonction de soumission du formulaire
+        function handleSubmit(event) {
+            event.preventDefault(); // Empêche l'envoi classique du formulaire
+
+            // Récupérer les données du formulaire
+            const formData = new FormData(document.getElementById("surveyForm"));
+            const formObject = {};
+            formData.forEach((value, key) => {
+                formObject[key] = value;
+            });
+
+            // Envoi des données à EmailJS
+            emailjs.send("service_4x53erx", "template_ypktsba", formObject)
+                .then(function(response) {
+                    document.getElementById("confirmationMessage").style.display = "block"; // Afficher message de confirmation
+                    setTimeout(() => {
+                        document.getElementById("confirmationMessage").style.display = "none"; // Masquer après 5 secondes
+                    }, 5000);
+                }, function(error) {
+                    console.log("Erreur d'envoi d'email : ", error);
+                    alert("Une erreur est survenue. Veuillez réessayer.");
+                });
+        }
+    </script>
+</body>
+</html>
